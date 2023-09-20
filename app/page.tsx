@@ -120,6 +120,7 @@ export default async function Home() {
                     {v.title}
                   </p>
 
+                  {/* update */}
                   <Button
                     className={`border-x-1 border-black hover:text-Ivory  ${
                       v.status
@@ -131,7 +132,8 @@ export default async function Home() {
                     status={v.status}
                     todoId={v.id}
                   />
-                  {/* )} */}
+
+                  {/* delete */}
                   <Button
                     className="hover:bg-rose-700 hover:text-Ivory focus:bg-rose-700 focus:text-Ivory"
                     buttonType="delete"

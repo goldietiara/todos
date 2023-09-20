@@ -1,6 +1,3 @@
-"use client";
-import React from "react";
-
 type AddTodoButtonProps = {
   className?: string;
 } & React.ComponentProps<"button">;
