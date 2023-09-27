@@ -36,13 +36,13 @@ const NavBar = async () => {
         hover:bg-black hover:text-Ivory
         focus:bg-black focus:text-Ivory"
         >
-          {/* <UserMenuButton session={session} /> */}
+          <UserMenuButton session={session} />
 
-          {session?.user ? (
+          {/* {session?.user ? (
             <UserMenuButton session={session} />
           ) : (
             <AuthProviders />
-          )}
+          )} */}
         </div>
       </div>
     </nav>

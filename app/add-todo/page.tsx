@@ -1,4 +1,3 @@
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { PiArrowLeftLight } from "react-icons/pi";
@@ -15,7 +14,6 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const session = await getCurrentUser();
-
   if (!session) {
     return (
       <span className="flex flex-col gap-3 justify-center mt-24 items-center m-auto text-3xl">
@@ -48,7 +46,7 @@ export default async function Home() {
 
     redirect("/");
   };
-  console.log(addNewTodo);
+
   return (
     <main className="w-full h-full flex items-center justify-start flex-col lg:px-7 my-6 relative">
       <div className="fixed bottom-0 left-7 h-[74.4%] border-l-1 border-black hidden md:flex"></div>

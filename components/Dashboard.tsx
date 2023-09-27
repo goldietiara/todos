@@ -16,6 +16,7 @@ export default function Dashboard({
   todoComplete,
 }: DashboardProps) {
   const total = todoUrgent + todoImportant + todoOthers;
+
   const PieData = [
     { name: "Important", value: todoComplete },
     { name: "Others", value: total - todoComplete },
@@ -77,9 +78,6 @@ export default function Dashboard({
               labelLine={false}
               stroke="black"
               className=" focus:outline-none"
-              // cx={120}
-              // cy={100}
-              // fill="#8884d8"
             >
               {PieData.map((v, i) => (
                 <Cell
@@ -95,11 +93,6 @@ export default function Dashboard({
               innerRadius={70}
               stroke="black"
               className=" focus:outline-none"
-              // label={PieLabel}
-              // labelLine={false}
-              // cx={120}
-              // cy={100}
-              // fill="#8884d8"
             >
               {PieData2.map((v, i) => (
                 <Cell

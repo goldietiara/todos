@@ -2,10 +2,10 @@ import { getCurrentUser } from "./api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/db/prisma";
 import Button from "@/components/Button";
 import { revalidatePath } from "next/cache";
-import { PiSmileyLight } from "react-icons/pi";
 import { Todo } from "@prisma/client";
 import Dashboard from "@/components/Dashboard";
 import Image from "next/image";
+import { PiSmileyLight } from "react-icons/pi";
 
 export default async function Home() {
   const session = await getCurrentUser();
@@ -23,6 +23,7 @@ export default async function Home() {
       </span>
     );
   }
+
   // get user todo
   const result: Todo[] = await prisma.todo.findMany({
     where: { userId: session?.user?.id },
@@ -80,72 +81,78 @@ export default async function Home() {
         <div className="fixed bottom-0 right-7 h-[80.5%] border-r-1 border-black"></div>
       </div>
 
-      <section className="w-full h-[525px] uppercase grid lg:grid-cols-2 lg:gap-0 gap-10">
-        <div className="md:px-10">
-          <h1 className=" mb-8 md:text-3xl text-xl text-center">dashboard</h1>
-          <div className=" border border-black w-full h-[456px]">
-            <Dashboard
-              todoUrgent={todoUrget.length}
-              todoImportant={todoImportant.length}
-              todoOthers={todoOthers.length}
-              todoComplete={todoComplete.length}
-            />
+      {result.length === 0 ? (
+        <h1 className=" mb-8 md:text-3xl text-xl text-center flex justify-center items-center gap-2">
+          What's on your fun agenda for today? <PiSmileyLight />
+        </h1>
+      ) : (
+        <section className="w-full h-[525px] uppercase grid lg:grid-cols-2 lg:gap-0 gap-10">
+          <div className="md:px-10">
+            <h1 className=" mb-8 md:text-3xl text-xl text-center">dashboard</h1>
+            <div className=" border border-black w-full h-[456px]">
+              <Dashboard
+                todoUrgent={todoUrget.length}
+                todoImportant={todoImportant.length}
+                todoOthers={todoOthers.length}
+                todoComplete={todoComplete.length}
+              />
+            </div>
           </div>
-        </div>
-        <div className="md:px-10  h-[100%] pb-5">
-          <h1 className=" mb-8 md:text-3xl text-center text-xl">
-            Remaining Todos: {result.length - todoComplete.length}
-          </h1>
-          <div className=" border-t-1 border-black h-[456px] overflow-y-auto">
-            {result.map((v, i: number) => {
-              return (
-                <div
-                  className={` flex border-x-1 border-b-1 border-black ${
-                    v.status ? ` bg-green-200/50` : ``
-                  }`}
-                >
-                  <p
-                    className={`w-10 ${
-                      v.category === "Urgent"
-                        ? `bg-rose-500`
-                        : v.category === "Important"
-                        ? `bg-amber-500`
-                        : `bg-sky-500`
+          <div className="md:px-10  h-[100%] pb-5">
+            <h1 className=" mb-8 md:text-3xl text-center text-xl">
+              Remaining Todos: {result.length - todoComplete.length}
+            </h1>
+            <div className=" border-t-1 border-black h-[456px] overflow-y-auto">
+              {result.map((v, i: number) => {
+                return (
+                  <div
+                    className={` flex border-x-1 border-b-1 border-black ${
+                      v.status ? ` bg-green-200/50` : ``
                     }`}
-                  />
-                  <p
-                    key={i}
-                    className=" border-l-1 border-black px-3 py-5 justify-between w-full overflow-auto"
                   >
-                    {v.title}
-                  </p>
+                    <p
+                      className={`w-10 ${
+                        v.category === "Urgent"
+                          ? `bg-rose-500`
+                          : v.category === "Important"
+                          ? `bg-amber-500`
+                          : `bg-sky-500`
+                      }`}
+                    />
+                    <p
+                      key={i}
+                      className=" border-l-1 border-black px-3 py-5 justify-between w-full overflow-auto"
+                    >
+                      {v.title}
+                    </p>
 
-                  {/* update */}
-                  <Button
-                    className={`border-x-1 border-black hover:text-Ivory  ${
-                      v.status
-                        ? ` hover:bg-rose-700 focus:bg-rose-700 focus:text-Ivory`
-                        : ` hover:bg-black`
-                    }`}
-                    buttonType="update"
-                    buttonAction={updateTodo}
-                    status={v.status}
-                    todoId={v.id}
-                  />
+                    {/* update */}
+                    <Button
+                      className={`border-x-1 border-black hover:text-Ivory  ${
+                        v.status
+                          ? ` hover:bg-rose-700 focus:bg-rose-700 focus:text-Ivory`
+                          : ` hover:bg-black`
+                      }`}
+                      buttonType="update"
+                      buttonAction={updateTodo}
+                      status={v.status}
+                      todoId={v.id}
+                    />
 
-                  {/* delete */}
-                  <Button
-                    className="hover:bg-rose-700 hover:text-Ivory focus:bg-rose-700 focus:text-Ivory"
-                    buttonType="delete"
-                    buttonAction={deleteTodo}
-                    todoId={v.id}
-                  />
-                </div>
-              );
-            })}
+                    {/* delete */}
+                    <Button
+                      className="hover:bg-rose-700 hover:text-Ivory focus:bg-rose-700 focus:text-Ivory"
+                      buttonType="delete"
+                      buttonAction={deleteTodo}
+                      todoId={v.id}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

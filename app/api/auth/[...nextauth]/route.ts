@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/db/prisma";
 import { env } from "@/lib/env";
-import { TypeSession, TypeUser } from "@/types";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { TypeSession } from "@/types";
 import { NextAuthOptions, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 import NextAuth, { getServerSession } from "next-auth/next";
@@ -42,6 +40,7 @@ export const authOptions: NextAuthOptions = {
         return session;
       }
     },
+
     async signIn({ user }: { user: AdapterUser | User }) {
       try {
         const userExists = (await prisma.user.findUnique({
